@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+  </head>
+  <style></style>
+  <body>
+    <div id="box">
+      <form action="#">
+        <input type="number" name="" id="num" placeholder="输入第一个数字" />
+        <select name="" id="operator">
+          <option value="+">+</option>
+          <option value="-">-</option>
+          <option value="*">*</option>
+          <option value="/">/</option>
+        </select>
+        <input type="number" name="" id="num1" placeholder="输入第二个数字" />
+        <button type="button" onclick="performcounter()">提交</button>
+      </form>
+      输出的值：
+      <h1 id="result">0</h1>
+    </div>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    //计算器
+    class Counter {
+      constructor() {
+        this.num = 0;
+        this.num1 = 0;
+        this.operator = "+";
+      }
+
+      plus(num) {
+        this.num = parseFloat(num);
+      }
+
+      minus(num) {
+        this.num1 = parseFloat(num);
+      }
+
+      setOperator(num) {
+        this.operator = num;
+      }
+
+      direct() {
+        let result;
+        if (this.operator === "+") {
+          result = this.num + this.num1;
+        } else if (this.operator === "-") {
+          result = this.num - this.num1;
+        } else if (this.operator === "*") {
+          result = this.num * this.num1;
+        } else if (this.operator === "/") {
+          result = this.num / this.num1;
+        }
+        return result;
+      }
+    }
+    function performcounter() {
+      const count = new Counter();
+      count.plus(document.getElementById("num").value);
+      count.minus(document.getElementById("num1").value);
+      count.setOperator(document.getElementById("operator").value);
+      const result = count.direct();
+      document.getElementById("result").innerHTML = result;
+    }
+  </script>
+</html>

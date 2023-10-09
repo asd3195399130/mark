@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+  </head>
+  <style></style>
+  <body>
+    <div id="box">
+      <h1></h1>
+    </div>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    //判断两个对象是否相等
+    // const obj1 = { name: "张三", age: "18", c: { a: 1, b: 2 }, sex: "女" };
+    // const obj2 = { name: "李四", age: 18, sex: "女", c: { a: 1, b: 2 } };
+    // const obj3 = { name: "李四", age: 20, sex: "男" };
+    // function deep(obj1, obj2) {
+    //   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+    //     return false;
+    //   }
+    //   for (let i in obj1) {
+    //     if (typeof obj1[1] === "object" && typeof obj2[i] === "object") {
+    //       if (!deep(obj1[i], obj2[i])) {
+    //         return false;
+    //       } else if (obj1[i] !== obj2[i]) {
+    //         return false;
+    //       }
+    //     }
+    //   }
+    //   return true;
+    // }
+    // console.log(deep(obj1, obj2));
+    // console.log(deep(obj2, obj3));
+
+    // 给数组原型对象增加一个批量删除方法 mydelete，要求这个方法可以传入多个下标将该3 .下标的值进行删除
+    // Array.prototype.mydelete = function (...args) {
+    //   args.sort((a, b) => b - a);
+    //   for (let i of args) {
+    //     if (i >= 0 && i < this.length) {
+    //       this.splice(i, 1);
+    //     }
+    //   }
+    // };
+    // const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    // arr.mydelete(2, 4, 6);
+    // $("#box h1").html(arr + " ");
+
+    //解决回调地狱 .使用 Promise 解决回调地狱问题，依次调用 fetchData( 函数，获取数据并打印
+    // function fetchData() {
+    //   return new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //       const data = "这是新鲜的蔬菜";
+    //       resolve(data);
+    //     }, 1000);
+    //   });
+    // }
+    // function handleData(data) {
+    //   return new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //       const newData = data + " 加工后的蔬菜";
+    //       resolve(newData);
+    //     }, 1000);
+    //   });
+    // }
+    // function showData(data) {
+    //   console.log(data);
+    // }
+    // fetchData()
+    //   .then(handleData)
+    //   .then(showData)
+    //   .catch((err) => console.log(err));
+
+    //b.对于同时需要获取两个数据的情况，使用 Promise.all0实现并行请求，并在两个数据都返回后打印。
+    // function fetchData1() {
+    //   return new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //       const data = "这是新鲜的";
+    //       resolve(data);
+    //     }, 1000);
+    //   });
+    // }
+    // function fetchData2() {
+    //   return new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //       const data = "这是加工好的水果罐头";
+    //       resolve(data);
+    //     }, 1000);
+    //   });
+    // }
+    // Promise.all([fetchData1(), fetchData2()])
+    //   .then(([data1, data]) => {
+    //     console.log("这是刚摘的水果", data1);
+    //     console.log("这是加工好的水果", data);
+    //   })
+    //   .catch((err) => console.log(err));
+    //用promise.race设置过期函数
+    function timeout(timeoutMS, promise) {
+      return Promise.race([
+        promise,
+        new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject('new Error("超时啦！！！")');
+          }, timeoutMS);
+        }),
+      ]);
+    }
+    const fetchData = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('new Error("成功啦！！！")');
+      }, 1000);
+    });
+    timeout(1500, fetchData)
+      .then((data) => {
+        console.log("获取到数据:" + data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  </script>
+</html>
