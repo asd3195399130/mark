@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+  </head>
+  <style></style>
+  <body>
+    <div id="box">
+      <a href="javascript:alert('Hello, World!')">点击这里弹出提示框</a>
+      <a href="tel:17839832629">点击这里拨打 17839832629</a>
+      <a href="mailto:3195399130@qq.com"
+        >点击这里发送邮件至 3195399130@qq.com</a
+      >
+      <a
+        href="../image/u97890204,4121247878&fm253&fmtauto&app138&fJPEG.webp"
+        download
+        >点击这里下载示例文件</a
+      >
+      <area shape="rect" coords="x1,y1,x2,y2" href="page1.html" />
+      <area shape="circle" coords="x,y,r" href="page2.html" />
+      <area shape="poly" coords="x1,y1,x2,y2,x3,y3..." href="page3.html" />
+    </div>
+    <figure>
+      <img
+        src="../image/u97890204,4121247878&fm253&fmtauto&app138&fJPEG.webp"
+        alt="" />
+      <figcaption>靠</figcaption>
+    </figure>
+    <picture>
+      <source
+        srcset="../image/1e9d06c0cba99eca16f9d82e190ea7ed5073.png"
+        media="(max-width: 600px)" />
+      <source
+        srcset="../image/1a775831360b59e96659a2d949acdfec6825.png"
+        media="(max-width: 900px)" />
+      <img src="../image/11472310d9e2de944ec0c12ae7929e38.jpg" alt="图像描述" />
+    </picture>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    const divs = document.querySelectorAll("div");
+    let divArr = [...divs];
+    console.log(divArr);
+  </script>
+</html>

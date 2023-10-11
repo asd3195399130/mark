@@ -1,0 +1,6 @@
+日报：
+1、今日学习：nodejs
+2、今日作业：无，
+3、今日问题：无
+4、单词：npm install  name：名字、version：剧本、description：描述、keywords：关键字、maintainers：维护者、
+contributors：投稿人、bugs：窃听、licenses：许可证、dependencies：依赖、scripts：脚本、bin：二进制文件、man：手册、homepage：主页、repository：仓库

@@ -1,0 +1,16 @@
+{
+  "name": "sun",
+  "version": "1.0.0",
+  "description": "link",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "git+https://github.com/asd3195399130/mark.git",
+  "author": "杨浩冰 <3195399130@qq.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asd3195399130/mark/issues"
+  },
+  "homepage": "https://github.com/asd3195399130/mark#readme"
+}

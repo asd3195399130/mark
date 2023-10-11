@@ -17,26 +17,26 @@
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
   <script>
     //判断两个对象是否相等
-    // const obj1 = { name: "张三", age: "18", c: { a: 1, b: 2 }, sex: "女" };
-    // const obj2 = { name: "李四", age: 18, sex: "女", c: { a: 1, b: 2 } };
-    // const obj3 = { name: "李四", age: 20, sex: "男" };
-    // function deep(obj1, obj2) {
-    //   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
-    //     return false;
-    //   }
-    //   for (let i in obj1) {
-    //     if (typeof obj1[1] === "object" && typeof obj2[i] === "object") {
-    //       if (!deep(obj1[i], obj2[i])) {
-    //         return false;
-    //       } else if (obj1[i] !== obj2[i]) {
-    //         return false;
-    //       }
-    //     }
-    //   }
-    //   return true;
-    // }
-    // console.log(deep(obj1, obj2));
-    // console.log(deep(obj2, obj3));
+    const obj1 = { name: "张三", age: "18", c: { a: 1, b: 2 }, sex: "女" };
+    const obj2 = { name: "李四", age: 18, sex: "女", c: { a: 1, b: 2 } };
+    const obj3 = { name: "李四", age: 20, sex: "男" };
+    function deep(obj1, obj2) {
+      if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+        return false;
+      }
+      for (let i in obj1) {
+        if (typeof obj1[1] === "object" && typeof obj2[i] === "object") {
+          if (!deep(obj1[i], obj2[i])) {
+            return false;
+          } else if (obj1[i] !== obj2[i]) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+    console.log(deep(obj1, obj2));
+    console.log(deep(obj2, obj3));
 
     // 给数组原型对象增加一个批量删除方法 mydelete，要求这个方法可以传入多个下标将该3 .下标的值进行删除
     // Array.prototype.mydelete = function (...args) {
@@ -115,7 +115,7 @@
         resolve('new Error("成功啦！！！")');
       }, 1000);
     });
-    timeout(1500, fetchData)
+    timeout(1000, fetchData)
       .then((data) => {
         console.log("获取到数据:" + data);
       })
