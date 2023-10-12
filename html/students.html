@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="" />
+    <script src=""></script>
+  </head>
+  <style>
+    table {
+      width: 800px;
+      border-collapse: collapse;
+      text-align: center;
+    }
+  </style>
+  <body>
+    <div id="box">
+      <table border="1">
+        <thead>
+          <tr>
+            <th colspan="5">学生信息</th>
+          </tr>
+          <tr>
+            <th>ID</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>年龄</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div>学生姓名：<input type="text" value="" id="username" /></div>
+    <!-- <div>
+      <button id="minus">上一页</button>
+      <span>1</span>
+      <button id="add">下一页</button>
+    </div> -->
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    const URL = "http://127.0.0.1:3000/students";
+    let page = 1,
+      size = 5;
+    $(function () {
+      getstudents();
+      //   $("#minus").click(addfun);
+      //   $("#add").click(plusfun);
+    });
+    // 下一页
+    // function plusfun() {
+    //   if (page < 1) {
+    //     page++;
+    //   }
+    // }
+    // function addfun() {}
+    function getstudents() {
+      $.ajax({
+        url: URL + "/list",
+        type: "get",
+        data: {
+          page: page,
+          size: size,
+        },
+        dataType: "json",
+        success: function (res) {
+          let html = "";
+          res.data.forEach((item) => {
+            html += `<tr>
+            <td>${item.id}</td>
+            <td>${item.name}</td>
+            <td>${item.sex}</td>
+            <td>${item.age}</td>
+            <td>
+             <button>编辑</button>
+             <button>删除</button>
+            </td>
+          </tr>`;
+          });
+          $("tbody").html(html);
+        },
+      });
+    }
+  </script>
+</html>
