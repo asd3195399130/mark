@@ -17,45 +17,57 @@ const getstudents = (params) => {
     );
   });
 };
-// //添加
-// const insertCar = (param) => {
-//   return new Promise((resolve, reject) => {
-//     connection.query(
-//       "insert into Car(name,color) values(?,?)",
-//       [param.name, param.color],
-//       (err, data) => {
-//         //如果err为null则成功
-//         resolve(data);
-//       }
-//     );
-//   });
-// };
-// //改
-// const updateCar = (param) => {
-//   return new Promise((resolve, reject) => {
-//     connection.query(
-//       "update car set username = ? where phone = ?",
-//       param,
-//       (err, data) => {
-//         //如果err为null则成功
-//         resolve(data);
-//       }
-//     );
-//   });
-// };
+//添加
+const addstudent = (params) => {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `INSERT INTO student(name,sex,age) VALUES(?,?,?)`,
+      [params.name, params.sex, params.age],
+      (err, data) => {
+        resolve(data);
+      }
+    );
+  });
+};
+//改
+
+const updatestudent = (id, param) => {
+  return new Promise((resolve, reject) => {
+    // console.log(id);
+    connection.query(
+      "update student set name = ?,sex= ?,age= ? where id = ?",
+      [param.name, param.sex, param.age, id],
+      (err, data) => {
+        if (err) {
+          reject(err);
+        }
+        //如果err为null则成功
+        resolve(data);
+      }
+    );
+  });
+};
 
 //删除
-// const deleteCar = (param) => {
-//   return new Promise((resolve, reject) => {
-//     connection.query("delete from car where id = ?", param, (err, data) => {
-//       resolve(data);
-//     });
-//   });
-// };
+const deleteStudent = (id, param) => {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "delete from student where id = ? ",
+      [param.name, param.sex, param.age, id],
+      (err, data) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(data);
+      }
+    );
+  });
+};
+
 //导出方法，在需要使用到的模块中导入
 module.exports = {
   getstudents,
-  //   insertCar,
-  //   updateCar,
-  //   deleteCar,
+  addstudent,
+  updatestudent,
+  deleteStudent,
 };

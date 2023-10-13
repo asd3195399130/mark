@@ -5,13 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="" />
-    <script src=""></script>
+    <link rel="stylesheet" href="../layui-v2.8.17/layui/css/layui.css" />
+    <script src="../layui-v2.8.17/layui/layui.js"></script>
   </head>
   <style>
     table {
       width: 800px;
       border-collapse: collapse;
+      text-align: center;
+    }
+    #from {
+      width: 500px;
+      height: 300px;
+      border: 1px solid #ccc;
+      text-align: center;
+      margin: 0 auto;
+      line-height: 50px;
+    }
+    #update {
+      width: 500px;
+      height: 200px;
+      border: 1px solid red;
       text-align: center;
     }
   </style>
@@ -33,7 +47,20 @@
         <tbody></tbody>
       </table>
     </div>
-    <div>学生姓名：<input type="text" value="" id="username" /></div>
+    <div id="from">
+      <h1>添加</h1>
+      学生姓名：<input type="text" value="黑龙" id="username" />
+      <hr />
+      性别：<select name="sex" id="sex">
+        <option value="男">男</option>
+        <option value="女">女</option>
+      </select>
+      <hr />
+      年龄：<input type="text" value="66" id="userage" />
+      <hr />
+      <button id="addbtn">添加</button>
+    </div>
+
     <!-- <div>
       <button id="minus">上一页</button>
       <span>1</span>
@@ -43,20 +70,68 @@
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
   <script>
     const URL = "http://127.0.0.1:3000/students";
-    let page = 1,
-      size = 5;
+    let page = 10,
+      size = 10;
+    let studentData = [],
+      editid = null;
     $(function () {
       getstudents();
-      //   $("#minus").click(addfun);
+      // $("#minus").click(addfun);
       //   $("#add").click(plusfun);
+      $("#addbtn").click(addbtnfun);
+      $("tbody").on("click", "button", tbodybtnfun);
+      // $("#save").click(updatestudent);
     });
-    // 下一页
-    // function plusfun() {
-    //   if (page < 1) {
-    //     page++;
-    //   }
-    // }
-    // function addfun() {}
+    function tbodybtnfun() {
+      // console.log(event.target);
+      if (event.target.innerHTML == "编辑") {
+        let index = $(this).data("index");
+
+        console.log(studentData[index]);
+        editid = studentData[index].id;
+        $("#username").val(studentData[index].name);
+        $("#sex").val(studentData[index].sex);
+        $("#age").val(studentData[index].age);
+        $("#addbtn").html("保存");
+      }
+      if (event.target.innerHTML == "删除") {
+        let index = $(this).data("index");
+        editid = studentData[index].id;
+        $.ajax({
+          url: URL + "/delete_student/" + editid,
+          type: "DELETE",
+          dataType: "json",
+          success: function (res) {
+            getstudents();
+          },
+        });
+      }
+    }
+    //更新和添加
+    function addbtnfun() {
+      let data = {
+        name: $("#username").val(),
+        sex: $("#sex").val(),
+        age: $("#userage").val(),
+      };
+      let api = URL + "/add";
+      if ($(this).html() == "保存") {
+        $("h1").html("修改");
+        api = URL + "/update/" + editid;
+      }
+      $.ajax({
+        url: api,
+        type: "POST",
+        data: data,
+        dataType: "json",
+        success: function (res) {
+          // console.log(res);
+          getstudents();
+        },
+      });
+    }
+
+    //获取数据
     function getstudents() {
       $.ajax({
         url: URL + "/list",
@@ -67,22 +142,26 @@
         },
         dataType: "json",
         success: function (res) {
-          let html = "";
-          res.data.forEach((item) => {
-            html += `<tr>
+          readerfun(res);
+        },
+      });
+    }
+    function readerfun(res) {
+      studentData = res.data;
+      let html = "";
+      studentData.forEach((item, index) => {
+        html += `<tr>
             <td>${item.id}</td>
             <td>${item.name}</td>
             <td>${item.sex}</td>
             <td>${item.age}</td>
             <td>
-             <button>编辑</button>
-             <button>删除</button>
+             <button data-index=${index}>编辑</button>
+             <button data-index=${index}>删除</button>
             </td>
           </tr>`;
-          });
-          $("tbody").html(html);
-        },
       });
+      $("tbody").html(html);
     }
   </script>
 </html>
