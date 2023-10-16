@@ -122,6 +122,7 @@
             <th>菜名</th>
             <th>图片</th>
             <th>价格</th>
+            <th>操作</th>
           </tr>
         </thead>
       </table>
@@ -133,7 +134,7 @@
     let page = 1,
       size = 5;
     let editid = null;
-
+    let arr = [];
     $(function () {
       getreading();
       $("#adddishes").on("click", "button", addishbtn);
@@ -193,6 +194,14 @@
           },
         });
       }
+      if (
+        event.target.nodeName == "BUTTON" &&
+        event.target.innerHTML == "添加购物车"
+      ) {
+        let index = event.target.dataset.index;
+        console.log(index);
+        console.log($(this));
+      }
     }
     function addbtnfun() {
       let data = {
@@ -203,10 +212,10 @@
         number: $("#number").val(),
       };
       event.preventDefault();
-      console.log($(this));
       let api = URL + "/addlist";
       if ($("#addbtn").html() == "保存") {
         api = URL + "/update/" + editid;
+        addishbtn();
       }
       $.ajax({
         url: api,
@@ -244,7 +253,7 @@
             <td>${item.status}</td>
             <td>${item.number}</td>
             <td>
-              <button class="layui-btn layui-bg-blue">添加购物车</button>
+              <button class="layui-btn layui-bg-blue" data-index=${index}>添加购物车</button>
               <button class="layui-btn layui-bg-red " data-index=${index}>删除</button>
               <button class="layui-btn layui-bg-purple" data-index=${index}>编辑</button>
             </td>
