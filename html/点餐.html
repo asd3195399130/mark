@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../layui-v2.8.17/layui/css/layui.css" />
+    <script src="../layui-v2.8.17/layui/layui.js"></script>
+  </head>
+  <style>
+    #box table {
+      width: 800px;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+    span {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 1px solid red;
+    }
+    .cart {
+      width: 300px;
+      background-color: #f8f8f8;
+      padding: 10px;
+    }
+    .cart table {
+      width: 500px;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    #addinit {
+      width: 500px;
+      height: 500px;
+      border: 1px solid red;
+      background-color: #f8f8f8;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      /* line-height: 20px;   */
+      display: none;
+    }
+  </style>
+  <body>
+    <div id="adddishes">
+      <button class="layui-btn layui-bg-orange">添加菜品</button>
+    </div>
+
+    <div id="box">
+      <table border="1">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>菜名</th>
+            <th>图片</th>
+            <th>价格</th>
+            <th>状态</th>
+            <th>数量</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div>
+      <button id="prive" class="layui-btn">上一页</button>
+      <button id="next" class="layui-btn">下一页</button>
+    </div>
+
+    <div id="addinit">
+      <form action="#">
+        <h1>添加</h1>
+        <div>
+          <label for="username">菜单名字：</label
+          ><input type="text" id="username" value="" name="username" />
+        </div>
+        <hr />
+        <div>
+          <label for="image">菜品图片：</label>
+          <input type="text" name="image" id="image" value="" />
+        </div>
+        <hr />
+        <div>
+          <label for="price">菜品价格：</label>
+          <input type="text" name="price" id="price" />
+        </div>
+        <hr />
+        <div>
+          <label for="status">菜单状态：</label>
+          <select name="" id="status">
+            <option value="在售">在售</option>
+            <option value="售罄">售罄</option>
+          </select>
+        </div>
+        <hr />
+        <div>
+          <label for="number">点餐数量：</label>
+          <input type="number" name="" id="number" />
+        </div>
+        <hr />
+        <button class="layui-btn" id="addbtn">提交</button>
+      </form>
+      <button class="layui-btn" id="cancel">取消</button>
+    </div>
+    <div class="cart">
+      <h3>购物车</h3>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>菜名</th>
+            <th>图片</th>
+            <th>价格</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.js"></script>
+  <script>
+    let URL = "http://127.0.0.1:3000/canteen/";
+    let page = 1,
+      size = 5;
+    let editid = null;
+
+    $(function () {
+      getreading();
+      $("#adddishes").on("click", "button", addishbtn);
+      $("form").submit(addbtnfun);
+      $("#cancel").click(cancelbtn);
+      $("tbody:first").on("click", tbodybtn);
+      $("#next").click(function () {
+        if (page == 1 || page > 1) {
+          page++;
+          getreading();
+        }
+      });
+      $("#prive").click(function () {
+        if (page > 1) {
+          page--;
+          getreading();
+        }
+      });
+    });
+    function cancelbtn() {
+      addishbtn();
+    }
+    function addishbtn() {
+      // console.log(666);
+      $("#addinit").toggle();
+    }
+    function tbodybtn() {
+      if (
+        event.target.nodeName == "BUTTON" &&
+        event.target.innerHTML == "编辑"
+      ) {
+        addishbtn();
+        let index = event.target.dataset.index;
+        editid = footerData[index].id;
+        console.log(editid);
+        $("#username").val(footerData[index].dishname);
+        $("#image").val(footerData[index].image_path);
+        $("#price").val(footerData[index].price);
+        $("#status").val(footerData[index].status);
+        $("#number").val(footerData[index].number);
+        $("#addbtn").html("保存");
+        $("h1").html("修改");
+      }
+      if (
+        event.target.nodeName == "BUTTON" &&
+        event.target.innerHTML == "删除"
+      ) {
+        let index = event.target.dataset.index;
+        // console.log(index);
+        editid = footerData[index].id;
+        $.ajax({
+          url: URL + "/dellist/" + editid,
+          type: "delete",
+          dataType: "json",
+          success: function (data) {
+            getreading();
+          },
+        });
+      }
+    }
+    function addbtnfun() {
+      let data = {
+        dishname: $("#username").val(),
+        image_path: $("#image").val(),
+        price: $("#price").val(),
+        status: $("#status").val(),
+        number: $("#number").val(),
+      };
+      event.preventDefault();
+      console.log($(this));
+      let api = URL + "/addlist";
+      if ($("#addbtn").html() == "保存") {
+        api = URL + "/update/" + editid;
+      }
+      $.ajax({
+        url: api,
+        type: "POST",
+        data: data,
+        dataType: "json",
+        success: function (data) {
+          getreading();
+        },
+      });
+    }
+    function getreading() {
+      $.ajax({
+        url: URL + "/Menulist",
+        type: "GET",
+        data: {
+          page: page,
+          size: size,
+        },
+        dataType: "json",
+        success: function (res) {
+          readingfun(res);
+        },
+      });
+    }
+    function readingfun(res) {
+      footerData = res.data;
+      let html = "";
+      footerData.forEach((item, index) => {
+        html += ` <tr>
+            <td>${item.id}</td>
+            <td>${item.dishname}</td>
+            <td><img src="${item.image_path}" alt="" /></td>
+            <td>${item.price}￥</td>
+            <td>${item.status}</td>
+            <td>${item.number}</td>
+            <td>
+              <button class="layui-btn layui-bg-blue">添加购物车</button>
+              <button class="layui-btn layui-bg-red " data-index=${index}>删除</button>
+              <button class="layui-btn layui-bg-purple" data-index=${index}>编辑</button>
+            </td>
+          </tr>`;
+      });
+      $("tbody:first").html(html);
+    }
+  </script>
+</html>

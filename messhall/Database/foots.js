@@ -1,13 +1,13 @@
 const connection = require("./db");
 
-//查询
-const getstudents = (params) => {
+//获取数据
+const getmenu = (params) => {
   return new Promise((resolve, reject) => {
     //第一个参数：sql语句
     //第二个参数：回调函数（err：查询错误，data：查询结果）
     const limit = (params.page - 1) * params.size;
     connection.query(
-      `SELECT * FROM student LIMIT ${limit},${params.size}`,
+      `SELECT * FROM fooder LIMIT ${limit},${params.size} `,
       (err, data) => {
         if (err) {
           reject(err);
@@ -18,12 +18,21 @@ const getstudents = (params) => {
   });
 };
 //添加
-const addstudent = (params) => {
+const addmenu = (params) => {
   return new Promise((resolve, reject) => {
     connection.query(
-      `INSERT INTO student(name,sex,age) VALUES(?,?,?)`,
-      [params.name, params.sex, params.age],
+      `INSERT INTO fooder(dishname, price, status, number,image_path) VALUES(?,?,?,?,?)`,
+      [
+        params.dishname,
+        params.price,
+        params.status,
+        params.number,
+        params.image_path,
+      ],
       (err, data) => {
+        if (err) {
+          reject(err);
+        }
         resolve(data);
       }
     );
@@ -31,14 +40,21 @@ const addstudent = (params) => {
 };
 //改
 
-const updatestudent = (id, param) => {
+const updatemenu = (id, param) => {
   return new Promise((resolve, reject) => {
     // console.log(id);
     connection.query(
-      "update student set name = ?,sex= ?,age= ? where id = ?",
-      [param.name, param.sex, param.age, id],
+      `update fooder set dishname= ?  ,price= ?  ,status= ?  , number= ? , image_path= ? where id = ${id}`,
+      [
+        param.dishname,
+        param.price,
+        param.status,
+        param.number,
+        param.image_path,
+      ],
       (err, data) => {
         if (err) {
+          console.log(err);
           reject(err);
         }
         //如果err为null则成功
@@ -49,10 +65,10 @@ const updatestudent = (id, param) => {
 };
 
 //删除
-const deleteStudent = (id, param) => {
+const deletemenu = (id, param) => {
   return new Promise((resolve, reject) => {
     connection.query(
-      `delete from student where id = ${id} `,
+      `delete from fooder where id = ${id} `,
       param,
       (err, data) => {
         if (err) {
@@ -66,8 +82,8 @@ const deleteStudent = (id, param) => {
 
 //导出方法，在需要使用到的模块中导入
 module.exports = {
-  getstudents,
-  addstudent,
-  updatestudent,
-  deleteStudent,
+  getmenu,
+  addmenu,
+  updatemenu,
+  deletemenu,
 };
